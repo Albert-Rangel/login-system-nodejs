@@ -17,7 +17,7 @@ adSchema.virtual('fullImageUrl').get(function() {
   // Si ya es URL absoluta (http/https)
 
 
-  console.log("entro en fullImageUrl")
+  console.log("entro en afullImageUrl")
   console.log("startsWith('https')1" +  this.imageUrl)
 
   if (this.imageUrl?.startsWith('https')) {

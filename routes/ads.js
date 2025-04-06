@@ -19,6 +19,7 @@ router.get('/active', async (req, res) => {
     console.log('Solicitando publicidades activas'); // Debug
     const ads = await Ad.find({ active: true });
     console.log(`Encontradas ${ads.length} publicidades`); // Debug
+    console.log(`voy a imprimir las publicidades`); // Debug
     console.log(ads); // Debug
     res.json(ads);
   } catch (err) {
