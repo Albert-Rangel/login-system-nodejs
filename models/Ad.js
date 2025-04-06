@@ -15,7 +15,7 @@ const adSchema = new mongoose.Schema({
 // Virtual para URL completa
 adSchema.virtual('fullImageUrl').get(function() {
   // Si ya es URL absoluta (http/https)
-  if (this.imageUrl?.startsWith('http')) {
+  if (this.imageUrl?.startsWith('baseUrlhttps')) {
     console.log("entro en el if")
 
     return this.imageUrl;
@@ -31,14 +31,14 @@ adSchema.virtual('fullImageUrl').get(function() {
       ? this.imageUrl 
       : `/${this.imageUrl}`;
 
-      console.log("baseUrl" + baseUrl)
-      console.log("imagePath" + imagePath)
+      console.log("baseUrl:" + baseUrl)
+      console.log("imagePath:" + imagePath)
     
     return `${baseUrl}${imagePath}`;
   }
   
   console.log("desarrollo")
-  console.log("this.imageUrl"+ this.imageUrl)
+  console.log("this.imageUrl:"+ this.imageUrl)
   // En desarrollo, usa ruta relativa
   return this.imageUrl;
 });
