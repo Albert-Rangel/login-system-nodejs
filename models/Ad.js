@@ -8,4 +8,13 @@ const adSchema = new mongoose.Schema({
   createdAt: { type: Date, default: Date.now }
 });
 
+adSchema.virtual('fullImageUrl').get(function() {
+  if (this.imageUrl.startsWith('http')) {
+    return this.imageUrl;
+  }
+  // Usa BASE_URL de las variables de entorno
+  return `${process.env.BASE_URL || ''}${this.imageUrl}`;
+});
+
+
 module.exports = mongoose.model('Ad', adSchema);

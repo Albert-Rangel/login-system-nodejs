@@ -12,7 +12,7 @@ const validateObjectId = (req, res, next) => {
   next();
 };
 
-// Obtener publicidades activas
+//Obtener publicidades activas
 router.get('/active', async (req, res) => {
   try {
     console.log('Solicitando publicidades activas'); // Debug
@@ -27,6 +27,21 @@ router.get('/active', async (req, res) => {
     });
   }
 });
+
+// router.get('/active', async (req, res) => {
+//   try {
+//     const ads = await Ad.find({ active: true }).lean();
+//     res.json(ads.map(ad => ({
+//       ...ad,
+//       imageUrl: ad.fullImageUrl // Usa el virtual
+//     })));
+//   } catch (err) {
+//     res.status(500).json({ message: err.message });
+//   }
+// });
+
+
+
 
 // Registrar un click (versión mejorada)
 router.post('/click', async (req, res) => {
