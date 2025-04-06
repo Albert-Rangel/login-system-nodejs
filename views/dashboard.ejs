@@ -1,0 +1,170 @@
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <h1 class="mt-4">Dashboard</h1>
+            <p class="lead mb-3">Welcome <%= user.name %></p>
+            <a href="/users/logout" class="btn btn-secondary mb-4">Logout</a>
+            
+            <!-- Sección de Publicidades -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="mb-0">Sponsored Content</h5>
+                    <small class="text-muted">Your ad clicks: <span id="totalClicks" class="font-weight-bold">0</span></small>
+                </div>
+                <div class="card-body">
+                    <div id="adsContainer" class="row">
+                        <!-- Las publicidades se cargarán aquí dinámicamente -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Script para manejar publicidades -->
+<script>
+    const userId = '<%= user._id %>';
+    
+    // Función para cargar publicidades
+    async function loadAds() {
+        try {
+            const response = await fetch('/api/ads/active');
+            const ads = await response.json();
+            
+            const container = document.getElementById('adsContainer');
+            container.innerHTML = ''; // Limpiar contenedor
+            
+            if(ads.length === 0) {
+                container.innerHTML = '<div class="col-12 text-center py-3"><p>No ads available at the moment</p></div>';
+                return;
+            }
+            
+            ads.forEach(ad => {
+                const adCol = document.createElement('div');
+                adCol.className = 'col-md-4 mb-4';
+                adCol.innerHTML = `
+                    <div class="card h-100 ad-card">
+                        <img src="${ad.imageUrl}" class="card-img-top ad-image" 
+                             alt="${ad.title}" 
+                             data-ad-id="${ad._id}"
+                             style="cursor: pointer; height: 180px; object-fit: cover;">
+                        <div class="card-body">
+                            <h6 class="card-title">${ad.title}</h6>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(adCol);
+                
+                // Agregar event listener para el click
+                adCol.querySelector('.ad-image').addEventListener('click', () => trackAdClick(ad._id));
+            });
+        } catch (error) {
+            console.error('Error loading ads:', error);
+            document.getElementById('adsContainer').innerHTML = '<div class="col-12 text-center py-3"><p>Error loading ads. Please try again later.</p></div>';
+        }
+    }
+    
+    // Función para registrar clicks
+    // async function trackAdClick(adId) {
+    //     try {
+    //         const response = await fetch('/api/ads/click', {
+    //             method: 'POST',
+    //             headers: {
+    //                 'Content-Type': 'application/json',
+    //             },
+    //             body: JSON.stringify({ userId, adId })
+    //         });
+            
+    //         if(response.ok) {
+    //             // Actualizar contador
+    //             await updateClickCount();
+                
+    //             // Opcional: Mostrar feedback visual
+    //             const clickedAd = document.querySelector(`.ad-image[data-ad-id="${adId}"]`);
+    //             clickedAd.parentElement.classList.add('clicked-ad');
+    //             setTimeout(() => {
+    //                 clickedAd.parentElement.classList.remove('clicked-ad');
+    //             }, 300);
+    //         }
+    //     } catch (error) {
+    //         console.error('Error tracking click:', error);
+    //     }
+    // }
+
+    async function trackAdClick(adId) {
+        try {
+            console.log('Intentando registrar click:', { userId, adId }); // Debug
+            
+            const response = await fetch('/api/ads/click', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ 
+                    userId: userId, 
+                    adId: adId 
+                })
+            });
+
+            const result = await response.json(); // Leer la respuesta JSON
+            
+            if(!response.ok) {
+                throw new Error(result.error || 'Error desconocido');
+            }
+
+            console.log('Click registrado exitosamente:', result); // Debug
+            await updateClickCount();
+            
+            // Feedback visual
+            const clickedAd = document.querySelector(`.ad-image[data-ad-id="${adId}"]`);
+            if(clickedAd) {
+                clickedAd.parentElement.classList.add('clicked-ad');
+                setTimeout(() => {
+                    clickedAd.parentElement.classList.remove('clicked-ad');
+                }, 300);
+            }
+        } catch (error) {
+            console.error('Error al registrar click:', error);
+            alert('Error al registrar el click. Por favor recarga la página.');
+        }
+    }
+
+    
+    // Función para actualizar el contador de clicks
+    async function updateClickCount() {
+        try {
+            const response = await fetch(`/api/ads/stats/${userId}`);
+            const data = await response.json();
+            document.getElementById('totalClicks').textContent = data.totalClicks;
+        } catch (error) {
+            console.error('Error updating click count:', error);
+        }
+    }
+    
+    // Cargar publicidades al iniciar la página
+    document.addEventListener('DOMContentLoaded', () => {
+        loadAds();
+        updateClickCount();
+    });
+</script>
+
+<!-- Estilos adicionales -->
+<style>
+    .ad-card {
+        transition: all 0.3s ease;
+        border: 1px solid rgba(0,0,0,0.125);
+    }
+    .ad-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
+    .clicked-ad {
+        background-color: rgba(0,123,255,0.1);
+        transition: background-color 0.3s ease;
+    }
+    .card-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+</style>
