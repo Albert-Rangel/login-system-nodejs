@@ -27,6 +27,11 @@
     
     // Función para cargar publicidades
     async function loadAds() {
+
+        const container = document.getElementById('adsContainer');
+container.style.display = 'flex'; // Forzar visualización
+container.style.flexWrap = 'wrap'; // Asegurar diseño responsive
+
         try {
             console.log('va a llamar a /api/ads/active');
 
@@ -71,33 +76,6 @@
         }
     }
     
-    // Función para registrar clicks
-    // async function trackAdClick(adId) {
-    //     try {
-    //         const response = await fetch('/api/ads/click', {
-    //             method: 'POST',
-    //             headers: {
-    //                 'Content-Type': 'application/json',
-    //             },
-    //             body: JSON.stringify({ userId, adId })
-    //         });
-            
-    //         if(response.ok) {
-    //             // Actualizar contador
-    //             await updateClickCount();
-                
-    //             // Opcional: Mostrar feedback visual
-    //             const clickedAd = document.querySelector(`.ad-image[data-ad-id="${adId}"]`);
-    //             clickedAd.parentElement.classList.add('clicked-ad');
-    //             setTimeout(() => {
-    //                 clickedAd.parentElement.classList.remove('clicked-ad');
-    //             }, 300);
-    //         }
-    //     } catch (error) {
-    //         console.error('Error tracking click:', error);
-    //     }
-    // }
-
     async function trackAdClick(adId) {
         try {
             console.log('Intentando registrar click:', { userId, adId }); // Debug
@@ -185,6 +163,11 @@
     #adsContainer {
         display: flex !important;
         unicode-bidi: normal;
+
+        min-height: 300px; /* Altura mínima */
+    background-color: #f5f5f5; /* Color temporal para debug */
+
+    
     }
     .card {
         display: flex !important;
