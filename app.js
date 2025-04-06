@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 const passport = require('passport');
 const flash = require('connect-flash');
 const session = require('express-session');
+const path = require('path');  // Módulo path añadido aquí
 
 const app = express();
 
@@ -59,8 +60,10 @@ app.use('/', require('./routes/index.js'));
 app.use('/users', require('./routes/users.js'));
 app.use('/api/ads', require('./routes/ads.js')); // Nueva ruta para publicidades
 
+
 // Servir archivos estáticos (para imágenes de publicidades)
-app.use(express.static('public')); // Asegúrate de crear esta carpeta si no existe
+// app.use(express.static('public')); // Asegúrate de crear esta carpeta si no existe
+app.use(express.static(path.join(__dirname, 'public')));
 
 const PORT = process.env.PORT || 5000;
 
