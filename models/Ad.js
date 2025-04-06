@@ -39,10 +39,10 @@ adSchema.virtual('fullImageUrl').get(function() {
 
       console.log("producion")
       // console.log("`${baseUrl}${imagePath}`:" + `${baseUrl}${imagePath}`)
-      console.log("`{imagePath}`:" + `{imagePath}`)
+      console.log("`{imagePath}`:" + this.imageUrl)
     
-    return `$${imagePath}`;
-    // return this.imageUrl;
+    // return `${baseUrl}${imagePath}`;
+     return this.imageUrl;
   }
   
   console.log("desarrollo")
