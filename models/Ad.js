@@ -33,8 +33,8 @@ adSchema.virtual('fullImageUrl').get(function() {
       ? this.imageUrl 
       : `/${this.imageUrl}`;
 
-    //return `${baseUrl}${imagePath}`;
-    return this.imageUrl;
+    return `${baseUrl}${imagePath}`;
+    // return this.imageUrl;
   }
   
   
