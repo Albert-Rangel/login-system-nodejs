@@ -29,8 +29,14 @@
     async function loadAds() {
 
         const container = document.getElementById('adsContainer');
-container.style.display = 'flex'; // Forzar visualización
-container.style.flexWrap = 'wrap'; // Asegurar diseño responsive
+        // Reset y estilos forzados
+        container.innerHTML = '';
+        container.style.display = 'flex';
+        container.style.flexWrap = 'wrap';
+        container.style.gap = '20px';
+        container.style.minHeight = '300px'; // Altura mínima visible
+        container.style.backgroundColor = 'transparent'; // Remover si hay colores que ocultan
+        
 
         try {
             console.log('va a llamar a /api/ads/active');
@@ -53,6 +59,14 @@ container.style.flexWrap = 'wrap'; // Asegurar diseño responsive
 
                 const adCol = document.createElement('div');
                 adCol.className = 'col-md-4 mb-4';
+                // Estilos forzados para cada card
+            adCol.style.cssText = `
+                flex: 1 1 300px;
+                opacity: 1 !important;
+                visibility: visible !important;
+                position: relative !important;
+                z-index: 1 !important;
+            `;
                 adCol.innerHTML = `
                     <div class="card h-100 ad-card">
                         <img src="${ad.imageUrl}" class="card-img-top ad-image" 
@@ -135,6 +149,23 @@ container.style.flexWrap = 'wrap'; // Asegurar diseño responsive
 
 <!-- Estilos adicionales -->
 <style>
+
+     /* Nuclear option - sobrescribe todo */
+     #adsContainer, 
+    #adsContainer .ad-card,
+    #adsContainer .ad-image {
+        display: flex !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        position: relative !important;
+        z-index: 1 !important;
+        width: auto !important;
+        height: auto !important;
+        max-width: none !important;
+        max-height: none !important;
+    }
+
+    
     .ad-card {
         transition: all 0.3s ease;
         border: 1px solid rgba(0,0,0,0.125);
@@ -167,7 +198,7 @@ container.style.flexWrap = 'wrap'; // Asegurar diseño responsive
         min-height: 300px; /* Altura mínima */
     background-color: #f5f5f5; /* Color temporal para debug */
 
-    
+
     }
     .card {
         display: flex !important;
