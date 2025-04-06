@@ -28,8 +28,12 @@
     // Función para cargar publicidades
     async function loadAds() {
         try {
+            console.log('va a llamar a /api/ads/active');
+
             const response = await fetch('/api/ads/active');
             const ads = await response.json();
+            console.log('respuesta a json de  /api/ads/active', ads);
+
             
             const container = document.getElementById('adsContainer');
             container.innerHTML = ''; // Limpiar contenedor
@@ -40,6 +44,8 @@
             }
             console.log('Imágenes cargadas:', ads.map(ad => ad.imageUrl));
             ads.forEach(ad => {
+            console.log('entro en el foreach de cada imagen');
+
                 const adCol = document.createElement('div');
                 adCol.className = 'col-md-4 mb-4';
                 adCol.innerHTML = `
@@ -55,6 +61,7 @@
                 `;
                 container.appendChild(adCol);
                 
+                console.log('container', container);
                 // Agregar event listener para el click
                 adCol.querySelector('.ad-image').addEventListener('click', () => trackAdClick(ad._id));
             });

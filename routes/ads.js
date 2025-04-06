@@ -15,9 +15,11 @@ const validateObjectId = (req, res, next) => {
 //Obtener publicidades activas
 router.get('/active', async (req, res) => {
   try {
+    console.log('Entro en routes/ads.js active'); // Debug
     console.log('Solicitando publicidades activas'); // Debug
     const ads = await Ad.find({ active: true });
     console.log(`Encontradas ${ads.length} publicidades`); // Debug
+    console.log(ads); // Debug
     res.json(ads);
   } catch (err) {
     console.error('Error al obtener publicidades:', err); // Debug

@@ -15,14 +15,20 @@ const adSchema = new mongoose.Schema({
 // Virtual para URL completa
 adSchema.virtual('fullImageUrl').get(function() {
   // Si ya es URL absoluta (http/https)
+
+
+  console.log("entro en fullImageUrl")
+  console.log("startsWith('https')1" +  this.imageUrl)
+
   if (this.imageUrl?.startsWith('https')) {
-    console.log("startsWith('https')" +  this.imageUrl)
+    console.log("startsWith('https')2" +  this.imageUrl)
 
     return this.imageUrl;
   }
   
   // En producción, usa BASE_URL + ruta relativa
   if (process.env.NODE_ENV === 'production' && process.env.BASE_URL) {
+
     // Asegura que no haya doble barra en la URL
     const baseUrl = process.env.BASE_URL.endsWith('/') 
       ? process.env.BASE_URL.slice(0, -1) 
@@ -39,7 +45,7 @@ adSchema.virtual('fullImageUrl').get(function() {
   }
   
   console.log("desarrollo")
-  console.log("this.imageUrl:"+ this.imageUrl)
+  console.log("this.imageUrl3:"+ this.imageUrl)
   // En desarrollo, usa ruta relativa
   return this.imageUrl;
 });
