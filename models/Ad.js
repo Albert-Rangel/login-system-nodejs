@@ -16,7 +16,7 @@ const adSchema = new mongoose.Schema({
 adSchema.virtual('fullImageUrl').get(function() {
   // Si ya es URL absoluta (http/https)
   if (this.imageUrl?.startsWith('https')) {
-    console.log("entro en el if")
+    console.log("startsWith('https')" +  this.imageUrl)
 
     return this.imageUrl;
   }
