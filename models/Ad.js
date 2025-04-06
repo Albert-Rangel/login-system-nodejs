@@ -31,13 +31,14 @@ adSchema.virtual('fullImageUrl').get(function() {
       ? this.imageUrl 
       : `/${this.imageUrl}`;
 
-      console.log(baseUrl)
-      console.log(imagePath)
+      console.log("baseUrl" + baseUrl)
+      console.log("imagePath" + imagePath)
     
     return `${baseUrl}${imagePath}`;
   }
   
   console.log("desarrollo")
+  console.log("this.imageUrl"+ this.imageUrl)
   // En desarrollo, usa ruta relativa
   return this.imageUrl;
 });
