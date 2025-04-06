@@ -21,7 +21,7 @@ adSchema.virtual('fullImageUrl').get(function() {
    
     return this.imageUrl;
   }
-  
+   
   // En producción, usa BASE_URL + ruta relativa
   if (process.env.NODE_ENV === 'production' && process.env.BASE_URL) {
 
