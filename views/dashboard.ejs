@@ -2,14 +2,14 @@
     <div class="row">
         <div class="col-md-12">
             <h1 class="mt-4">Dashboard</h1>
-            <p class="lead mb-3">Welcome <%= user.name %></p>
+            <p class="lead mb-3">Bienvenido <%= user.name %></p>
             <a href="/users/logout" class="btn btn-secondary mb-4">Logout</a>
             
             <!-- Sección de Publicidades -->
             <div class="card mb-4">
                 <div class="card-header">
-                    <h5 class="mb-0">Sponsored Content</h5>
-                    <small class="text-muted">Your ad clicks: <span id="totalClicks" class="font-weight-bold">0</span></small>
+                    <h5 class="mb-0">Espacio Publicitario</h5>
+                    <small class="text-muted">Tus clicks de publicidad: <span id="totalClicks" class="font-weight-bold">0</span></small>
                 </div>
                 <div class="card-body">
                     <div id="adsContainer" class="row">
@@ -33,13 +33,9 @@ container.style.display = 'flex'; // Forzar visualización
 container.style.flexWrap = 'wrap'; // Asegurar diseño responsive
 
         try {
-            console.log('va a llamar a /api/ads/active');
-
+            
             const response = await fetch('/api/ads/active');
             const ads = await response.json();
-            console.log('respuesta a json de  /api/ads/active', ads);
-
-            
             const container = document.getElementById('adsContainer');
             container.innerHTML = ''; // Limpiar contenedor
             
@@ -47,10 +43,9 @@ container.style.flexWrap = 'wrap'; // Asegurar diseño responsive
                 container.innerHTML = '<div class="col-12 text-center py-3"><p>No ads available at the moment</p></div>';
                 return;
             }
-            console.log('Imágenes cargadas:', ads.map(ad => ad.imageUrl));
+            
             ads.forEach(ad => {
-            console.log('entro en el foreach de cada imagen');
-
+            
                 const adCol = document.createElement('div');
                 adCol.className = 'col-md-4 mb-4';
                 adCol.innerHTML = `
@@ -66,13 +61,12 @@ container.style.flexWrap = 'wrap'; // Asegurar diseño responsive
                 `;
                 container.appendChild(adCol);
                 
-                console.log('container', container);
                 // Agregar event listener para el click
                 adCol.querySelector('.ad-image').addEventListener('click', () => trackAdClick(ad._id));
             });
         } catch (error) {
-            console.error('Error loading ads:', error);
-            document.getElementById('adsContainer').innerHTML = '<div class="col-12 text-center py-3"><p>Error loading ads. Please try again later.</p></div>';
+            console.error('Error cargando las publicidades:', error);
+            document.getElementById('adsContainer').innerHTML = '<div class="col-12 text-center py-3"><p>Error cargando las publicidades. Porfavor intente de nuevo mas tarde.</p></div>';
         }
     }
     
@@ -122,7 +116,7 @@ container.style.flexWrap = 'wrap'; // Asegurar diseño responsive
             const data = await response.json();
             document.getElementById('totalClicks').textContent = data.totalClicks;
         } catch (error) {
-            console.error('Error updating click count:', error);
+            console.error('Error actualizando la cuenta de clics:', error);
         }
     }
     

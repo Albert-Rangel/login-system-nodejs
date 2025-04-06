@@ -15,15 +15,12 @@ const validateObjectId = (req, res, next) => {
 //Obtener publicidades activas
 router.get('/active', async (req, res) => {
   try {
-    console.log('Entro en routes/ads.js active'); // Debug
-    console.log('Solicitando publicidades activas'); // Debug
+    
     const ads = await Ad.find({ active: true });
-    console.log(`Encontradas ${ads.length} publicidades`); // Debug
-    console.log(`voy a imprimir las publicidades`); // Debug
-    console.log(ads); // Debug
+    
     res.json(ads);
   } catch (err) {
-    console.error('Error al obtener publicidades:', err); // Debug
+    
     res.status(500).json({ 
       error: 'Error al cargar publicidades',
       details: process.env.NODE_ENV === 'development' ? err.message : undefined
@@ -31,25 +28,10 @@ router.get('/active', async (req, res) => {
   }
 });
 
-// router.get('/active', async (req, res) => {
-//   try {
-//     const ads = await Ad.find({ active: true }).lean();
-//     res.json(ads.map(ad => ({
-//       ...ad,
-//       imageUrl: ad.fullImageUrl // Usa el virtual
-//     })));
-//   } catch (err) {
-//     res.status(500).json({ message: err.message });
-//   }
-// });
-
-
-
 
 // Registrar un click (versión mejorada)
 router.post('/click', async (req, res) => {
-  console.log('Datos recibidos:', req.body); // Debug
-  
+ 
   try {
     // Validación completa
     if (!req.body.userId || !req.body.adId) {
@@ -68,7 +50,6 @@ router.post('/click', async (req, res) => {
     });
 
     const savedClick = await newClick.save();
-    console.log('Click registrado:', savedClick); // Debug
     
     res.status(201).json({ 
       success: true,
@@ -76,7 +57,7 @@ router.post('/click', async (req, res) => {
     });
 
   } catch (err) {
-    console.error('Error al registrar click:', err); // Debug
+    
     res.status(500).json({ 
       error: 'Error al registrar click',
       details: process.env.NODE_ENV === 'development' ? {
@@ -90,7 +71,6 @@ router.post('/click', async (req, res) => {
 // Obtener estadísticas (versión mejorada)
 router.get('/stats/:userId', validateObjectId, async (req, res) => {
   try {
-    console.log(`Obteniendo stats para usuario ${req.params.userId}`); // Debug
     
     const stats = await AdClick.aggregate([
       { $match: { userId: mongoose.Types.ObjectId(req.params.userId) } },
@@ -104,11 +84,10 @@ router.get('/stats/:userId', validateObjectId, async (req, res) => {
     ]);
 
     const result = stats[0] || { totalClicks: 0, lastClick: null };
-    console.log('Estadísticas obtenidas:', result); // Debug
     
     res.json(result);
   } catch (err) {
-    console.error('Error al obtener estadísticas:', err); // Debug
+  
     res.status(500).json({ 
       error: 'Error al obtener estadísticas',
       details: process.env.NODE_ENV === 'development' ? err.message : undefined
